@@ -1,0 +1,123 @@
+from tkinter import *
+from tkinter import ttk
+from tkinter import messagebox
+from PIL import ImageTk,Image  
+
+
+animals = [
+    [1,"220925_game\concho.jpg","Con Chó","Dog"],
+    [2,"220925_game\conga.jpg","Con Gà Trống","Rooster"],
+    [3,"220925_game\conho.jpg","Con Hổ","Tiger"],
+    [4,"220925_game\conlon.jpg","Con Lợn","Pig"],
+    [5,"220925_game\conmeo.jpg","Con Mèo","Cat"],
+    [6,"220925_game\contrau.jpg","Con Trâu","Buffalo"]
+]
+
+root = Tk()
+root.title('Game')
+root.geometry('340x500')
+root.resizable(False, False)
+
+idanimal = IntVar()
+idanimal.set(1)
+
+animalImage = StringVar()
+animalImage.set("220925_game\concho.jpg")
+
+animalName = StringVar()
+animalName.set("Con chó")
+
+textanswer = StringVar()
+textanswer.set("")
+
+answer = StringVar()
+answer.set("Dog")
+
+Score = IntVar()
+Score.set(0)
+
+animal = []
+
+
+def btn_enter(event):
+    event.widget['bg']= 'blue'
+    event.widget['fg']= 'white'
+    
+def btn_leave(event):
+    event.widget['bg']='lightblue'
+    event.widget['fg']= 'black'
+
+def btn_nextclick(event):
+    idanimal.set(idanimal.get()+1)
+    if idanimal.get()>6:
+        idanimal.set(1)
+    LoadNewAnimal()
+
+def Submit(event):
+    if textanswer.get().lower() == answer.get().lower():
+        messagebox.showinfo("Đáp án", "Bạn đã trả lời chính xác!")
+        Score.set(Score.get()+1)
+        idanimal.set(idanimal.get()+1)
+        if idanimal.get()>6:
+            idanimal.set(1)
+        LoadNewAnimal()
+    else:
+        messagebox.showinfo("Đáp án", "Bạn đã trả lời chưa chính xác!")
+
+def LoadNewAnimal():
+    for ani in animals:
+        if ani[0] == idanimal.get():
+            animalImage.set(ani[1])
+            animalName.set(ani[2])
+            answer.set(ani[3])
+            break
+
+    load = Image.open(animalImage.get())
+    resized_image= load.resize((300,300))
+    new_image= ImageTk.PhotoImage(resized_image)
+    textanswer.set('')
+    canvas.create_image(10,10, anchor=NW, image=new_image)
+    
+
+root.columnconfigure(0,weight = 1)
+
+root.rowconfigure(0,weight = 1)
+root.rowconfigure(1,weight = 1)
+root.rowconfigure(2,weight = 1)
+root.rowconfigure(3,weight = 1)
+
+canvas = Canvas(root, width = 300, height = 300)      
+canvas.grid(row=0,column=0,padx=10,pady=10,sticky=NSEW)
+
+load = Image.open(animalImage.get())
+resized_image= load.resize((300,300))
+new_image= ImageTk.PhotoImage(resized_image)
+canvas.create_image(10,10, anchor=NW, image=new_image)
+
+lb_name = Label(root,textvariable=animalName,font=('Arial',12,'underline'),fg='blue')
+lb_name.grid(row=1,column=0,sticky=NSEW)
+
+etr_name = Entry(root,textvariable=textanswer,font=('Arial',12))
+etr_name.grid(row=2,column=0,sticky=NSEW,padx=100,pady=10)
+etr_name.bind("<Return>",Submit)
+
+frame = LabelFrame( root, relief = FLAT,bg='blue',bd = 3)
+frame.grid(row=3,column=0,padx=15,pady=15,sticky=NSEW)
+frame.columnconfigure(0,weight = 1)
+frame.columnconfigure(1,weight = 1)
+frame.columnconfigure(2,weight = 1)
+frame.rowconfigure(0,weight = 1)
+
+lb = Label(frame,text='Điểm',font=('Arial',12))
+lb.grid(row=0,column=0,sticky=NSEW)
+
+lb_score = Label(frame,textvariable=Score,font=('Arial',12))
+lb_score.grid(row=0,column=1,sticky=NSEW)
+
+btn_next = Button(frame,text='Next', width=7,bg = 'lightblue')
+btn_next.grid(row=0,column=2,sticky=NSEW)
+btn_next.bind("<Button-1>",btn_nextclick)
+btn_next.bind('<Enter>', btn_enter)
+btn_next.bind('<Leave>', btn_leave)
+
+root.mainloop()
