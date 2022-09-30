@@ -10,8 +10,7 @@ animals = [
     [3,"220925_game\conho.jpg","Con Hổ","Tiger"],
     [4,"220925_game\conlon.jpg","Con Lợn","Pig"],
     [5,"220925_game\conmeo.jpg","Con Mèo","Cat"],
-    [6,"220925_game\contrau.jpg","Con Trâu","Buffalo"]
-]
+    [6,"220925_game\contrau.jpg","Con Trâu","Buffalo"]]
 
 root = Tk()
 root.title('Game')
@@ -37,7 +36,6 @@ Score = IntVar()
 Score.set(0)
 
 animal = []
-
 
 def btn_enter(event):
     event.widget['bg']= 'blue'
