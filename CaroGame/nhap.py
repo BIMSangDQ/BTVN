@@ -23,18 +23,22 @@ countOwin.set(0)
 countdown = IntVar()
 countdown.set(30)
 
+Oturn = StringVar()
+Oturn.set('')
+
 Xturn = StringVar()
 Xturn.set('Đến lượt')
 
-Oturn = StringVar()
-Oturn.set('Đến lượt')
+newgame= False
 
 positionX = []
 positionO = []
 cell=[]
 
 def btn_click(event):
-    if count.get()==1:
+    global newgame
+    if newgame==False:
+        newgame = True
         threading.Thread(target=startcountdown,name="1").start()
 
     position = GetPositionWidget(event.widget.grid_info())
@@ -47,24 +51,17 @@ def btn_click(event):
             event.widget['font'] = ('Arial',8,'bold')
             event.widget['fg']='red'
             positionO.append(position)
-            Xturn.set('')
-            Oturn.set('Đến lượt')
+            Oturn.set('')
+            Xturn.set('Đến lượt')
         else:
             event.widget['text']='X'
             event.widget['font'] = ('Arial',8,'bold')
             event.widget['fg']='blue'
             positionX.append(position)
-            Oturn.set('')
-            Xturn.set('Đến lượt')
+            Xturn.set('')
+            Oturn.set('Đến lượt')
         count.set(count.get()+1)
         countdown.set(30)
-
-        if len(positionO)>0:
-            if checkWin(positionO):
-                SetScore('O')
-        if len(positionX)>0:       
-            if checkWin(positionX):
-                SetScore('X')
 
 def SetScore(team):
     MsgBox = messagebox.askquestion ('CaroGame',f'Team {team} thắng!\n Các bạn có muốn tiếp tục ván mới không?')
@@ -84,6 +81,7 @@ def NewGame():
     global positionO
     for btn in cell:
         btn['text'] = ''
+        btn['bg'] = 'white'
     positionX = []
     positionO = []
     countdown.set(30)
@@ -100,7 +98,24 @@ def GetPositionWidget(grid_info):
     position=[column,row]
     return position
 
-def checkWin(arr):
+def check():
+    global newgame
+    if len(positionO)>0:
+        if subcheck(positionO):
+            SetScore('O')
+            Oturn.set('')
+            Xturn.set('Đến lượt')
+            newgame = False
+            count.set(0)
+    if len(positionX)>0:       
+        if subcheck(positionX):
+            SetScore('X')
+            Oturn.set('Đến lượt')
+            Xturn.set('')
+            newgame = False
+            count.set(1)
+
+def subcheck(arr):
     #Check hàng ngang
     for i in range(0,len(arr),1):
         pos = arr[i]
@@ -110,6 +125,10 @@ def checkWin(arr):
                 result = False
                 break
         if result:
+            position = []
+            for j in range(0,5,1):
+                position.append([pos[0]+j,pos[1]])
+                highlight(position)
             return True
 
     #Check hàng dọc
@@ -121,6 +140,10 @@ def checkWin(arr):
                 result = False
                 break
         if result:
+            position = []
+            for j in range(0,5,1):
+                position.append([pos[0],pos[1]+j])
+                highlight(position)
             return True
 
     #Check xiên 1
@@ -132,6 +155,10 @@ def checkWin(arr):
                 result = False
                 break
         if result:
+            position = []
+            for j in range(0,5,1):
+                position.append([pos[0]+j,pos[1]+j])
+                highlight(position)
             return True
 
     #Check xiên 2
@@ -143,8 +170,19 @@ def checkWin(arr):
                 result = False
                 break
         if result:
+            position = []
+            for j in range(0,5,1):
+                position.append([pos[0]+j,pos[1]-j])
+                highlight(position)
             return True
     return False
+
+def highlight(posar):
+        for position in posar:
+            for btn in cell:
+                p = GetPositionWidget(btn.grid_info())
+                if p[0] == position[0] and p[1] == position[1]:
+                    btn['bg'] = 'lightGreen'
 
 def findPosition(arrp,pt):
     """
@@ -159,16 +197,20 @@ def findPosition(arrp,pt):
     return False
 
 def startcountdown():
+    global newgame 
     countdown.set(30)
-    while True:
+    while newgame:
         for i in range(0,30,1):
             try:
                 countdown.set(countdown.get()-1)
                 time.sleep(1)
+                count.set(count.get()+1)
+                if newgame == False:
+                    break
             except:
                 print("End thread")
                 return
-        count.set(count.get()+1)
+        
         if count.get()%2==0:
             Xturn.set('')
             Oturn.set('Đến lượt')
@@ -209,8 +251,8 @@ frame_banco.columnconfigure(0,minsize = 100)
 frame_banco.columnconfigure(21,minsize=100)
 frame_banco.rowconfigure(21,minsize=0)
 
-lb_Xturn = Label(frame_banco,bg="white",fg="Green",textvariable=Xturn,font=('Arial',14))
-lb_Xturn.grid(row=0,rowspan=2,column=0,sticky=NSEW)
+lb_Oturn = Label(frame_banco,bg="white",fg="Green",textvariable=Oturn,font=('Arial',14))
+lb_Oturn.grid(row=0,rowspan=2,column=0,sticky=NSEW)
 
 loadO = Image.open('CaroGame\images\O.jpg')
 resized_imageO= loadO.resize((100,100))
@@ -222,7 +264,7 @@ canvasO.create_image(10,10, anchor=NW, image=photo_O)
 z=0
 for i in range(0,20,1):
     for j in range(1,21,1):
-        btncell = Button(frame_banco,bg='white',width=2)
+        btncell = Button(frame_banco,bg='white',width=2,command=check)
         btncell.grid(row=i,column=j,sticky=NSEW)
         btncell.bind('<Button-1>',btn_click)
         cell.append(btncell)
@@ -235,7 +277,7 @@ canvasX = Canvas(frame_banco, width = 100,bg='white',highlightbackground = 'whit
 canvasX.grid(row=2,rowspan=19,column=21,sticky=NSEW)
 canvasX.create_image(10,10, anchor=NW, image=photo_X)
 
-lb_Oturn = Label(frame_banco,bg="white",fg="Green",textvariable=Oturn,font=('Arial',14))
-lb_Oturn.grid(row=0,rowspan=2,column=21,sticky=NSEW)
+lb_Xturn = Label(frame_banco,bg="white",fg="Green",textvariable=Xturn,font=('Arial',14))
+lb_Xturn.grid(row=0,rowspan=2,column=21,sticky=NSEW)
 
 root.mainloop()
