@@ -1,5 +1,3 @@
-from ast import Pass
-from concurrent.futures import thread
 from tkinter import *
 from tkinter import messagebox
 from PIL import ImageTk,Image  
@@ -10,8 +8,9 @@ root = Tk()
 root.title('Caro')
 root.geometry('750x780')
 root.resizable(False, False)
-root.configure(bg='skyblue')
+root.configure(bg='blue')
 
+#region variable
 countXwin = IntVar()
 countXwin.set(0)
 
@@ -36,7 +35,9 @@ positionX = []
 positionO = []
 cell=[]
 path = 'CaroGame\Setting.txt'
+#endregion 
 
+#region method
 def btn_enter(event):
     event.widget['bg']= 'skyblue'
 
@@ -68,6 +69,7 @@ def btn_click(event):
         threading.Thread(target=startcountdown).start()
 
     position = GetPositionWidget(event.widget.grid_info())
+
     global positionX
     global positionO
 
@@ -87,6 +89,7 @@ def btn_click(event):
             Xturn.set('')
             Oturn.set('Đến lượt')
         countdown.set(timeSetting.get())
+        setbackgound()
 
 def SetScore(team):
     MsgBox = messagebox.askquestion ('CaroGame',f'Team {team} thắng!\n Các bạn có muốn tiếp tục ván mới không?')
@@ -94,6 +97,7 @@ def SetScore(team):
         countOwin.set(countOwin.get()+1)
     else:
         countXwin.set(countXwin.get()+1)
+    setbackgound()
 
     if MsgBox == 'yes':
         NewGame()      
@@ -112,14 +116,9 @@ def NewGame():
     countdown.set(timeSetting.get())
 
 def GetPositionWidget(grid_info):
-    infos = str(grid_info).split(', ')
-    column = 0
-    row = 0
-    for info in infos:
-        if info.count("'column': ")>0:
-            column = int(info.replace("'column':" , ""))
-        elif info.count("'row': ")>0:
-            row = int(info.replace("'row':" , ""))
+    #infos = str(grid_info).split(', ')
+    column = grid_info["column"]
+    row = grid_info["row"]
     position=[column,row]
     return position
 
@@ -127,6 +126,8 @@ def check():
     global newgame
     global Oturn
     global Xturn
+    global positionO
+    global positionX
     if len(positionO)>0:
         if subcheck(positionO):
             SetScore('O')
@@ -229,22 +230,33 @@ def startcountdown():
             try:
                 countdown.set(countdown.get()-1)
                 time.sleep(1)
-                if newgame == False:
+                if newgame == False or countdown.get()==0:
                     break
             except:
                 print("End thread")
                 return
         
-        if newgame and countdown.get()==0:
-            if Xturn.get() == 'Đến lượt':
-                Xturn.set('')
-                Oturn.set('Đến lượt')
-            else:
-                Oturn.set('')
-                Xturn.set('Đến lượt')
-            countdown.set(timeSetting.get())
+        try:
+            if countdown.get()==0:
+                if Xturn.get() == 'Đến lượt':
+                    Xturn.set('')
+                    Oturn.set('Đến lượt')
+                else:
+                    Oturn.set('')
+                    Xturn.set('Đến lượt')
+                countdown.set(timeSetting.get())
+                setbackgound()
+        except:
+            break
 
-##
+def setbackgound():
+    if Xturn.get() == 'Đến lượt':
+        root['bg']='blue'
+    else:
+        root['bg'] = 'red'
+#endregion
+
+#region Thời gian, tính điểm
 frameInfo = LabelFrame( root, relief = FLAT,bg='white', bd=10)
 frameInfo.grid(row=0,column=0,columnspan=3,padx=15,pady=(15,0),sticky=NSEW)
 frameInfo.columnconfigure(0,minsize = 200)
@@ -268,8 +280,9 @@ lb_timecount.grid(row=1,column=1,sticky=NSEW)
 
 lb_d2show = Label(frameInfo,bg="white",fg="blue",textvariable=countXwin,font=('Arial',12))
 lb_d2show.grid(row=1,column=2,sticky=NSEW)
+#endregion
 
-##
+#region bàn cờ
 frame_banco = LabelFrame( root, relief = FLAT,bg='white', bd=10)
 frame_banco.grid(row=1,column=0,columnspan=3,padx=15,pady=15,sticky=NSEW)
 frame_banco.columnconfigure(0,minsize = 100)
@@ -277,13 +290,13 @@ frame_banco.columnconfigure(21,minsize=100)
 frame_banco.rowconfigure(21,minsize=0)
 
 lb_Oturn = Label(frame_banco,bg="white",fg="Green",textvariable=Oturn,font=('Arial',14))
-lb_Oturn.grid(row=0,rowspan=2,column=0,sticky=NSEW)
+lb_Oturn.grid(row=6,rowspan=2,column=0,sticky=NSEW)
 
 loadO = Image.open('CaroGame\images\O.jpg')
 resized_imageO= loadO.resize((100,100))
 photo_O = ImageTk.PhotoImage(resized_imageO)
 canvasO = Canvas(frame_banco, width = 100,bg='white',highlightbackground = 'white')      
-canvasO.grid(row=2,rowspan=19,column=0,sticky=NSEW)
+canvasO.grid(row=8,rowspan=10,column=0,sticky=NSEW)
 canvasO.create_image(10,10, anchor=NW, image=photo_O)
 
 z=0
@@ -299,12 +312,14 @@ loadX = Image.open('CaroGame\images\X.jpg')
 resized_imageX= loadX.resize((100,100))
 photo_X = ImageTk.PhotoImage(resized_imageX)
 canvasX = Canvas(frame_banco, width = 100,bg='white',highlightbackground = 'white')      
-canvasX.grid(row=2,rowspan=19,column=21,sticky=NSEW)
+canvasX.grid(row=8,rowspan=10,column=21,sticky=NSEW)
 canvasX.create_image(10,10, anchor=NW, image=photo_X)
 
 lb_Xturn = Label(frame_banco,bg="white",fg="Green",textvariable=Xturn,font=('Arial',14))
-lb_Xturn.grid(row=0,rowspan=2,column=21,sticky=NSEW)
+lb_Xturn.grid(row=6,rowspan=2,column=21,sticky=NSEW)
+#endregion
 
+#region setting
 frame_setting = LabelFrame( root, relief = FLAT,bg='white', bd=10, text='Cài đặt',font=('Arial',12,'underline','bold'))
 frame_setting.grid(row=2,column=0,columnspan=3,padx=15,pady=(0,15),sticky=NSEW)
 frame_setting.columnconfigure(0,minsize = 300)
@@ -333,6 +348,7 @@ btn_saveSetting.grid(row=3,column=4,sticky=NSEW)
 btn_saveSetting.bind('<Enter>',btn_enter)
 btn_saveSetting.bind('<Leave>',btn_leave)
 btn_saveSetting.bind('<Button-1>',btn_savesetting)
+#endregion 
 
 load_setting()
 
