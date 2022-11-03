@@ -1,8 +1,9 @@
+import threading
+import time
 from tkinter import *
 from tkinter import messagebox
-from PIL import ImageTk,Image  
-import time
-import threading
+
+from PIL import Image, ImageTk
 
 root = Tk()
 root.title('Caro')
@@ -130,16 +131,16 @@ def check():
     global positionX
     if len(positionO)>0:
         if subcheck(positionO):
-            SetScore('O')
             Oturn.set('')
             Xturn.set('Đến lượt')
             newgame = False
+            SetScore('O')
     if len(positionX)>0:       
         if subcheck(positionX):
-            SetScore('X')
             Oturn.set('Đến lượt')
             Xturn.set('')
             newgame = False
+            SetScore('X')
 
 def subcheck(arr):
     #Check hàng ngang
@@ -236,18 +237,15 @@ def startcountdown():
                 print("End thread")
                 return
         
-        try:
-            if countdown.get()==0:
-                if Xturn.get() == 'Đến lượt':
-                    Xturn.set('')
-                    Oturn.set('Đến lượt')
-                else:
-                    Oturn.set('')
-                    Xturn.set('Đến lượt')
-                countdown.set(timeSetting.get())
-                setbackgound()
-        except:
-            break
+        if countdown.get()==0:
+            if Xturn.get() == 'Đến lượt':
+                Xturn.set('')
+                Oturn.set('Đến lượt')
+            else:
+                Oturn.set('')
+                Xturn.set('Đến lượt')
+            countdown.set(timeSetting.get())
+            setbackgound()
 
 def setbackgound():
     if Xturn.get() == 'Đến lượt':
