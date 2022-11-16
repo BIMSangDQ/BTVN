@@ -1,0 +1,40 @@
+﻿DAY,MONTH,YEAR,HOURS,FROM_CODE,FROM,TO_CODE,TRANS,MONEY
+1,5,2022,1:05:23 PM,ACB,Ngân hàng Á Châu,ABBANK,1125,778000000
+1,5,2022,2:05:23 PM,ABBANK,Ngân hàng An Bình,OceanBank,1245,1254300000
+1,5,2022,3:05:23 PM,ANZVL,Ngân hàng ANZ Việt Nam,BIDV,1367,2010421000
+1,5,2022,4:05:23 PM,OceanBank,Ngân hàng Đại Dương,DongABank,1210,1965643000
+1,5,2022,5:04:23 PM,GPBank,Ngân hàng dầu khí toàn cầu,SeABank,756,854672000
+1,6,2022,6:05:53 PM,BIDV,Ngân hàng Đầu tư và Phát triển Việt Nam,MSB,2367,1979279000
+1,6,2022,7:05:43 PM,DongABank,Ngân hàng Đông Á,Vietcombank,875,370324000
+1,6,2022,8:05:21 PM,SeABank,Ngân Hàng Đông Nam Á,Agribank,1023,1622965000
+1,6,2022,9:05:28 PM,MSB,Ngân hàng Hàng Hải,HDBank,234,1696364000
+1,7,2022,10:05:23 PM,Vietcombank,Ngân hàng Ngoại Thương Việt Nam,VIB,1230,335000000
+2,7,2022,7:10:45 AM,Agribank,Ngân hàng NN&PT Nông thôn Việt Nam,MB,2021,1405196000
+2,9,2022,8:14:35 AM,HDBank,Ngân hàng Phát triển TP Hồ Chí Minh,SHB,655,424754000
+2,9,2022,9:50:39 AM,MB,Ngân hàng Quân đội,TPBank,766,1918320000
+3,9,2022,11:10:45 AM,VIB,Ngân hàng quốc tế,MSB,931,1263343000
+3,9,2022,9:07:03 AM,SHB,Ngân hàng Sài Gòn - Hà Nội,SeABank,837,1903641000
+4,10,2022,10:06:03 AM,SCB,Ngân hàng Sài Gòn,BIDV,439,854448000
+4,10,2022,5:12:33 AM,TPBank,Ngân hàng Tiên Phong,OceanBank,769,985793000
+4,10,2022,9:07:17 PM,VPBank,Ngân hàng Việt Nam Thịnh Vượng,BIDV,1088,1271324000
+4,11,2022,1:43:03 PM,OceanBank,Ngân hàng Đại Dương,BIDV,1534,1549094000
+5,11,2022,2:43:03 PM,GPBank,Ngân hàng dầu khí toàn cầu,DongABank,1431,682468000
+5,2,2022,3:43:03 PM,BIDV,Ngân hàng Đầu tư và Phát triển Việt Nam,SeABank,805,1992725000
+5,2,2022,4:43:03 PM,DongABank,Ngân hàng Đông Á,Agribank,779,1194962000
+6,3,2022,5:43:03 PM,Vietcombank,Ngân hàng Ngoại Thương Việt Nam,HDBank,456,1379482000
+6,4,2022,6:43:03 PM,Agribank,Ngân hàng NN&PT Nông thôn Việt Nam,VIB,329,1280742000
+6,4,2022,7:43:03 PM,HDBank,Ngân hàng Phát triển TP Hồ Chí Minh,MB,984,1539321000
+7,4,2022,8:43:03 PM,ACB,Ngân hàng Á Châu,BIDV,1103,470747000
+7,4,2022,9:43:03 PM,ABBANK,Ngân hàng An Bình,DongABank,1100,1366064000
+9,5,2022,10:43:03 PM,ANZVL,Ngân hàng ANZ Việt Nam,SeABank,1302,1799407000
+9,5,2022,11:43:03 PM,OceanBank,Ngân hàng Đại Dương,VIB,1417,1168746000
+9,6,2022,12:43:03 AM,SeABank,Ngân Hàng Đông Nam Á,MB,1572,1692257000
+9,7,2022,1:43:03 AM,MSB,Ngân hàng Hàng Hải,MB,244,1695602000
+9,8,2022,2:43:03 AM,BIDV,Ngân hàng Đầu tư và Phát triển Việt Nam,SeABank,531,1876064000
+10,9,2022,3:43:03 AM,DongABank,Ngân hàng Đông Á,VIB,726,1418669000
+10,10,2022,4:43:03 AM,HDBank,Ngân hàng Phát triển TP Hồ Chí Minh,MB,211,1155276000
+10,11,2022,5:43:03 AM,MB,Ngân hàng Quân đội,VIB,653,985498000
+10,12,2022,6:43:03 AM,VIB,Ngân hàng quốc tế,MB,811,1220723000
+10,12,2022,7:43:03 AM,BIDV,Ngân hàng Đầu tư và Phát triển Việt Nam,VIB,634,1979311000
+10,12,2022,8:43:03 AM,BIDV,Ngân hàng Đầu tư và Phát triển Việt Nam,MB,932,584653000
+10,12,2022,9:43:03 AM,MB,Ngân hàng Quân đội,ACB,912,905573000
