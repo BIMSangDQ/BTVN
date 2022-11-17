@@ -1,0 +1,18 @@
+﻿Country,Population(millions),Births per 1000 population,Deaths per 1000 populationi,Infant mortality rate,Urban Population (%),Density of population
+Algeria,44.9,22,5,19,74,598
+Egypt,103.5,21,7,16,44,3077
+Libya,,17,6,9,81,
+Morocco,36.7,92,50,15,64,479
+Sudan,46.9,34,7,39,36,223
+Tunisia,11.8,16,8,14,156,456
+Western Sahara,0.6,17,6,26,87,14400
+Ghana,33.5,28,8,32,58,1332
+Liberia,5.3,31,9,58,53,1061
+Mali,22.6,42,,55,,352
+Nigeria,218.5,12,12,72,53,53
+Senegal,17.9,32,5,33,49,49
+Togo,8.8,32,8,44,4,43
+Gambia,2.7,33,8,31,58,63
+Benin,13.4,36,9,54,49,477
+Burkina Faso,22.7,,,,,378
+Cabo Verde,0.6,15,5,11,74,1186
