@@ -235,12 +235,19 @@ def btn_delbookev():
         return
 
 def btn_addfilter():
-    filter = [operator.get(),cproperty.get(),condition.get(),valueen.get()]
-    tree2.insert('', END, values=filter)
+    if cproperty.get()!= "" and condition.get()!="" and valueen.get()!="":
+        filter = [operator.get() if operator.get()!= "" else '          And' ,cproperty.get(),condition.get(),valueen.get()]
+        tree2.insert('', END, values=filter)
+    else:
+        messagebox.showwarning(title='Admin',message='Bạn chưa điền đủ các trường (Chỉ được bỏ trống trường đầu tiên).\nVui lòng thử lại!')
 
 def btn_clearfilter():
-    tree2.delete(*tree2.get_children())
-    add_book2tree()
+    if len(tree2.selection())==0:
+        tree2.delete(*tree2.get_children())
+        add_book2tree()
+    else:
+        for selected_item in tree2.selection():
+            tree2.delete(selected_item)
 
 def btn_filter():
     condition_list = []
@@ -250,7 +257,7 @@ def btn_filter():
     if len(condition_list) == 0:
         add_book2tree()
     else:
-        property_list = ['Lb_book.id','book_name','category_name','year_of_public','page_number','[Lb_Company].name','price' ]
+        property_list = ['book_name','category_name','year_of_public','page_number','[Lb_Company].name','price' ]
         cproperty_list = ['Tên sách','Thể loại','Năm XB','Số trang','NXB','Giá']
         count = 0
         condition_string = "("
@@ -263,9 +270,9 @@ def btn_filter():
                     condition_string += " and "
         
             cproperty_list.index(c[1])
-            condition_string += property_list[cproperty_list.index(c[1])+1]
+            condition_string += property_list[cproperty_list.index(c[1])]
             
-            if c[2] == 'Có chứa từ':
+            if c[2] == 'Có chứa':
                 condition_string += f" LIKE N'%{c[3]}%'"
             else:
                 condition_string += f" {c[2]} {c[3]}" 
@@ -367,6 +374,7 @@ btn_viewall['command']= btn_filter
 btn_viewall.bind('<Enter>',btn_enter)
 btn_viewall.bind('<Leave>',btn_leavecyan)
 
+#filter
 cb_Operator=Combobox(frame_result, textvariable=operator, width=10)
 cb_Operator["values"] = ['          And','Or']
 cb_Operator.grid(row=2,column=0, sticky=NSEW,pady=5 )
@@ -376,7 +384,7 @@ cb_Property["values"] = ['Tên sách','Thể loại','Năm XB','Số trang','NXB
 cb_Property.grid(row=2,column=1, sticky=NSEW,pady=5 )
 
 cb_Condition=Combobox(frame_result, textvariable=condition, width=10)
-cb_Condition["values"] = ['Có chứa từ','=','>','>=','<','<=']
+cb_Condition["values"] = ['Có chứa','=','>','>=','<','<=']
 cb_Condition.grid(row=2,column=2, sticky=NSEW,pady=5 )
 
 en_value=Entry(frame_result, textvariable=valueen, bd=2)
@@ -394,15 +402,16 @@ btn_del["command"] =btn_clearfilter
 btn_del.bind('<Enter>',btn_enter)
 btn_del.bind('<Leave>',btn_leavered)
 
+
 columnscondition = ('Operator','Property','Condition','Value')
 tree2 = ttk.Treeview(frame_result, columns=columnscondition, show='headings')
-tree2.heading('Operator', text='Operator')
-tree2.column('Operator', minwidth=0, width=100, stretch=NO)
-tree2.heading('Property', text='Property')
+tree2.heading('Operator', text='')
+tree2.column('Operator', minwidth=0, width=132, stretch=NO)
+tree2.heading('Property', text='Thuộc tính')
 tree2.column('Property', minwidth=0, width=100, stretch=NO)
-tree2.heading('Condition', text='Condition')
-tree2.column('Condition', minwidth=0, width=150, stretch=NO)
-tree2.heading('Value', text='Value')
+tree2.heading('Condition', text='Điều kiện')
+tree2.column('Condition', minwidth=0, width=95, stretch=NO)
+tree2.heading('Value', text='Giá trị')
 tree2.column('Value', minwidth=0, width=200, stretch=NO)
 tree2.grid(row=3, column=0,columnspan=6, sticky=NSEW)
 
@@ -410,4 +419,5 @@ scrollbar = ttk.Scrollbar(frame_result, orient=VERTICAL, command=tree2.yview)
 tree2.configure(yscroll=scrollbar.set)
 scrollbar.grid(row=3, column=6, sticky='ns')
 #endregion
+
 root.mainloop()
